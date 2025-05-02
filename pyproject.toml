@@ -10,7 +10,7 @@ authors = [{ name = "Your Name", email = "your.email@example.com" }]
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.7"
-dependencies = ["numpy >= 1.21", "scipy >= 1.7"]
+dependencies = ["numpy >= 1.21", "scipy >= 1.7", "matplotlib >= 3.5"]
 
 [project.optional-dependencies]
 dev = [
