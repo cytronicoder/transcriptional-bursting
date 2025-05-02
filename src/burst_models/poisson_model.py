@@ -1,3 +1,4 @@
+from typing import List, Tuple
 from .utils import pmf_mixed_poisson, method_of_moments_poisson, pmf_total_compound
 
 
@@ -7,7 +8,7 @@ class PoissonBurstModel:
     for transcriptional bursting.
     """
 
-    def __init__(self, k_on, k_off, r, p):
+    def __init__(self, k_on: float, k_off: float, r: float, p: float) -> None:
         """
         Initialize model parameters.
 
@@ -23,15 +24,15 @@ class PoissonBurstModel:
         self.p = p
         self.lambda_b = p * r / k_off
 
-    def burst_size_pmf(self, k):
+    def burst_size_pmf(self, k: int) -> float:
         """Marginal burst-size PMF P(N=k)"""
         return pmf_mixed_poisson(k, self.p * self.r, self.k_off)
 
-    def total_transcripts_pmf(self, x, L, max_bursts=100):
+    def total_transcripts_pmf(self, x: int, L: float, max_bursts: int = 100) -> float:
         """PMF of total observed transcripts over window length L"""
         return pmf_total_compound(x, self.burst_size_pmf, self.k_on, L, max_bursts)
 
-    def first_moments(self, L):
+    def first_moments(self, L: float) -> Tuple[float, float, float]:
         """
         Return (mean, variance, burstiness index) of total counts over window L.
 
@@ -47,7 +48,7 @@ class PoissonBurstModel:
         return mean, var, index
 
     @staticmethod
-    def fit_moments(data, L):
+    def fit_moments(data: List[int], L: float) -> Tuple[float, float]:
         """
         Estimate lambda and k_on from observed data.
 

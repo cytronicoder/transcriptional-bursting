@@ -1,3 +1,4 @@
+from typing import List, Tuple
 from scipy.special import comb
 from .utils import pmf_total_compound
 
@@ -7,7 +8,7 @@ class NegBinBurstModel:
     Negative Binomial + Markov model with hierarchical variability.
     """
 
-    def __init__(self, k_on, mu_b, alpha):
+    def __init__(self, k_on: float, mu_b: float, alpha: float) -> None:
         """
         Initialize NB bursting model.
 
@@ -20,16 +21,17 @@ class NegBinBurstModel:
         self.mu_b = mu_b
         self.alpha = alpha
 
-    def burst_size_pmf(self, k):
+    def burst_size_pmf(self, k: int) -> float:
         """PMF for NB-distributed burst sizes P(N=k)"""
         p = self.alpha / (self.alpha + self.mu_b)
-        return comb(k + self.alpha - 1, k) * p**self.alpha * (1 - p) ** k
+        result = comb(k + self.alpha - 1, k) * p**self.alpha * (1 - p) ** k
+        return float(result)
 
-    def total_transcripts_pmf(self, x, L, max_bursts=100):
+    def total_transcripts_pmf(self, x: int, L: float, max_bursts: int = 100) -> float:
         """Compound Poisson PMF for total transcript count"""
         return pmf_total_compound(x, self.burst_size_pmf, self.k_on, L, max_bursts)
 
-    def first_moments(self, L):
+    def first_moments(self, L: float) -> Tuple[float, float, float]:
         """
         Return (mean, variance, burstiness index) of total counts over window L.
 
@@ -45,7 +47,7 @@ class NegBinBurstModel:
         return mean, var, index
 
     @staticmethod
-    def fit_moments(data, L):
+    def fit_moments(data: List[int], L: float) -> Tuple[float, float, float]:
         """
         Placeholder for fitting NB model parameters from data.
 

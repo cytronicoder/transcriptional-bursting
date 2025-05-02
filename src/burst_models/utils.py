@@ -1,8 +1,10 @@
+from typing import Callable, List, Tuple
 import numpy as np
+import math
 from scipy.stats import poisson
 
 
-def pmf_mixed_poisson(k, rate, k_off):
+def pmf_mixed_poisson(k: int, rate: float, k_off: float) -> float:
     """
     Compute marginal burst-size PMF where burst duration is exponentially distributed.
 
@@ -16,10 +18,10 @@ def pmf_mixed_poisson(k, rate, k_off):
     """
     lam = rate / k_off
     p0 = k_off / (rate + k_off)
-    return (lam**k / np.math.factorial(k)) * p0 * (rate / (rate + k_off)) ** k
+    return (lam**k / math.factorial(k)) * p0 * (rate / (rate + k_off)) ** k
 
 
-def method_of_moments_poisson(xs, L):
+def method_of_moments_poisson(xs: List[int], L: float) -> Tuple[float, float]:
     """
     Estimate lambda and k_on using method of moments.
 
@@ -38,7 +40,13 @@ def method_of_moments_poisson(xs, L):
     return lambda_hat, k_on_hat
 
 
-def pmf_total_compound(x, pmf_burst, k_on, L, max_bursts=100):
+def pmf_total_compound(
+    x: int,
+    pmf_burst: Callable[[int], float],
+    k_on: float,
+    L: float,
+    max_bursts: int = 100,
+) -> float:
     """
     Compound Poisson PMF: total observed transcripts X = sum of B burst sizes.
 
