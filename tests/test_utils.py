@@ -32,6 +32,7 @@ def test_compound_zero_bursts():
     L = 2.0
     expected_p0 = np.exp(-k_on * L)
     # pmf_burst returns zero at k=0, and 1 at k>=1 (unnormalized for test)
+
     def pmf_burst(k):
         return 0.0 if k == 0 else 1.0
 
