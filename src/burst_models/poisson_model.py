@@ -3,7 +3,8 @@ from .utils import pmf_mixed_poisson, method_of_moments_poisson, pmf_total_compo
 
 class PoissonBurstModel:
     """
-    Poisson + Two-State Markov model with detection thinning for transcriptional bursting.
+    Poisson + Two-State Markov model with detection thinning
+    for transcriptional bursting.
     """
 
     def __init__(self, k_on, k_off, r, p):
